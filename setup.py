@@ -17,6 +17,6 @@ setup(
     ],
     python_requires=">=3.6",
     install_requires=[
-        "mongoengine==0.26.0"
+        "mongoengine"
     ]
 )
