@@ -13,7 +13,7 @@ class Group(Document):
     crop: Crop
         Crop object that the group belongs to. Mandatory.
     ext_id: str
-        External identifier for the group. Mandatory.
+        External identifier for the group. Mandatory and unique.
     
     Methods:
     -------
@@ -28,4 +28,4 @@ class Group(Document):
     }
     group_name = StringField(max_length=255, required=True)
     crop = ReferenceField(Crop, required=True)
-    ext_id = StringField(max_length=100, required=True)
+    ext_id = StringField(max_length=100, required=True, unique=True)
