@@ -24,7 +24,9 @@ class Accession(Document):
     longitude: float
         Longitude of the geographical location where the accession was collected. Mandatory.
     accession_id: str
-        Unique identifier of the accession. Optional.
+        The identifier of the accession in source database. Optional.
+    ext_id: str
+        External identifier for the accession. Mandatory and unique.
     other_attributes: dict
         Additional attributes of the accession. Optional.
     
@@ -47,4 +49,5 @@ class Accession(Document):
     latitude = FloatField(required=True)
     longitude = FloatField(required=True)
     accession_id = StringField(max_length=255)
+    ext_id = StringField(max_length=255, required=True, unique=True)
     other_attributes = DictField()
