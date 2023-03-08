@@ -29,7 +29,8 @@ class AccessionTestCase(unittest.TestCase):
             source_database='GENESYS',
             latitude=40.7128,
             longitude=-74.0060,
-            accession_id='12345'
+            accession_id='12345',
+            ext_id='123'
         )
 
     def test_create_accession(self):
