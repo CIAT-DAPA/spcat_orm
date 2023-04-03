@@ -10,6 +10,7 @@ from mongoengine import connect
 from ormgap.models.accession import Accession
 from ormgap.models.crop import Crop
 from ormgap.models.group import Group
+from ormgap.models.country import Country
 
 class AccessionTestCase(unittest.TestCase):
     @classmethod
@@ -21,12 +22,15 @@ class AccessionTestCase(unittest.TestCase):
         self.assertIsNotNone(self.crop.id)
         self.group = Group(group_name='Test Group', crop=self.crop, ext_id='12345').save()
         self.assertIsNotNone(self.group.id)
+        self.country = Country(iso_2='AR',  name='Argentina').save()
+        self.assertIsNotNone(self.country.id)
         self.accession = Accession(
             species_name='Test Species', 
             crop=self.crop, 
             landrace_group=self.group, 
             institution_name='ICARDA',
             source_database='GENESYS',
+            country=self.country,
             latitude=40.7128,
             longitude=-74.0060,
             accession_id='12345',
@@ -59,6 +63,13 @@ class AccessionTestCase(unittest.TestCase):
         accession = accessions.first()
         self.assertEqual(self.group.id, accession.landrace_group.id)
     
+    def test_get_accession_by_country(self):
+        self.accession.save()
+        accessions =Accession.objects(country=self.country)
+        self.assertGreaterEqual(len(accessions), 1)
+        accession = accessions.first()
+        self.assertEqual(self.country.id, accession.country.id)
+
     def test_unique_ext_id(self):
         self.accession.save()
         accession = Accession(
@@ -69,12 +80,12 @@ class AccessionTestCase(unittest.TestCase):
             source_database='GENESYS',
             latitude=91, # Latitud inválida
             longitude=-181, # Longitud inválida
+            country= self.country,
             accession_id='12345',
             ext_id='123'
         )
         with self.assertRaises(Exception) as context:
             accession.save()
-        print(str(context.exception))
         self.assertTrue('Tried to save duplicate unique keys (E11000 Duplicate Key Error)' in str(context.exception))
 
     def test_get_accession_by_invalid_id(self):
@@ -102,6 +113,7 @@ class AccessionTestCase(unittest.TestCase):
     def tearDown(self):
         self.crop.delete()
         self.group.delete()
+        self.country.delete()
         Accession.objects.delete()
 
 if __name__ == '__main__':

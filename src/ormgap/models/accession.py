@@ -1,6 +1,7 @@
 from mongoengine import Document, StringField, ReferenceField, FloatField, DictField
 from .crop import Crop
 from .group import Group
+from .country import Country
 
 class Accession(Document):
 
@@ -19,6 +20,8 @@ class Accession(Document):
         Name of the institution that holds the accession. Optional.
     source_database: str
         Name of the database where the accession was originally stored. Optional.
+    country: Country
+        Country object, country to which the accession belongs. Mandatory.
     latitude: float
         Latitude of the geographical location where the accession was collected. Mandatory.
     longitude: float
@@ -46,6 +49,7 @@ class Accession(Document):
     landrace_group = ReferenceField(Group, required=True)
     institution_name = StringField(max_length=255)
     source_database = StringField(max_length=255)
+    country = ReferenceField(Country, required=True)
     latitude = FloatField(required=True)
     longitude = FloatField(required=True)
     accession_id = StringField(max_length=255)
