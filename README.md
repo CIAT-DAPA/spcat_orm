@@ -93,6 +93,7 @@ Attributes:
 - species_name: `str` Name of the species of the accession. Optional.
 - crop: `Crop` Crop object, Crop to which the accession belongs. Mandatory.
 - landrace_group: `Group` Group object, Landrace group to which the accession belongs. Mandatory.
+- country: `Country` Country object, country to which the accession belongs. Mandatory.
 - institution_name: `str` Name of the institution that holds the accession. Optional.
 - source_database: `str` Name of the database where the accession was originally stored. Optional.
 - latitude: `float` Latitude of the geographical location where the accession was collected. Mandatory.
