@@ -11,6 +11,7 @@ from ormgap.models.accession import Accession
 from ormgap.models.crop import Crop
 from ormgap.models.group import Group
 from ormgap.models.country import Country
+from ormgap.models.project import Project
 
 class AccessionTestCase(unittest.TestCase):
     @classmethod
@@ -24,6 +25,8 @@ class AccessionTestCase(unittest.TestCase):
         self.assertIsNotNone(self.group.id)
         self.country = Country(iso_2='AR',  name='Argentina').save()
         self.assertIsNotNone(self.country.id)
+        self.project = Project(name='Test Project', ext_id='P001').save()
+        self.assertIsNotNone(self.project.id)
         self.accession = Accession(
             species_name='Test Species', 
             crop=self.crop, 
@@ -34,7 +37,8 @@ class AccessionTestCase(unittest.TestCase):
             latitude=40.7128,
             longitude=-74.0060,
             accession_id='12345',
-            ext_id='123'
+            ext_id='123',
+            project=self.project
         )
 
     def test_create_accession(self):
@@ -47,6 +51,7 @@ class AccessionTestCase(unittest.TestCase):
         self.assertEqual(accession.landrace_group.id, self.group.id)
         self.assertEqual(accession.latitude, 40.7128)
         self.assertEqual(accession.longitude, -74.0060)
+        self.assertEqual(accession.project.id, self.project.id)
 
     
     def test_get_accession_by_crop(self):
@@ -114,6 +119,7 @@ class AccessionTestCase(unittest.TestCase):
         self.crop.delete()
         self.group.delete()
         self.country.delete()
+        self.project.delete()
         Accession.objects.delete()
 
 if __name__ == '__main__':

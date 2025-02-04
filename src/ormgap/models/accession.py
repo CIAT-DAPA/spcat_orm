@@ -2,6 +2,7 @@ from mongoengine import Document, StringField, ReferenceField, FloatField, DictF
 from .crop import Crop
 from .group import Group
 from .country import Country
+from .project import Project
 
 class Accession(Document):
 
@@ -32,6 +33,8 @@ class Accession(Document):
         External identifier for the accession. Mandatory and unique.
     other_attributes: dict
         Additional attributes of the accession. Optional.
+    project: Project
+        Project object, project to which the accession is linked. Optional.    
     
     Methods:
     -------
@@ -46,7 +49,7 @@ class Accession(Document):
     }
     species_name = StringField(max_length=150)
     crop = ReferenceField(Crop, required=True)
-    landrace_group = ReferenceField(Group, required=True)
+    landrace_group = ReferenceField(Group, required=False)
     institution_name = StringField(max_length=255)
     source_database = StringField(max_length=255)
     country = ReferenceField(Country, required=True)
@@ -54,4 +57,5 @@ class Accession(Document):
     longitude = FloatField(required=True)
     accession_id = StringField(max_length=255)
     ext_id = StringField(max_length=255, required=True, unique=True)
+    project = ReferenceField(Project, required=False)
     other_attributes = DictField()
